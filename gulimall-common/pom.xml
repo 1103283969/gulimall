@@ -11,8 +11,6 @@
 
     <artifactId>gulimall-common</artifactId>
     <description>每一个微服务的公共依赖</description>
-
-
     <dependencies>
         <!--mybatids-->
         <dependency>
@@ -21,14 +19,12 @@
             <version>3.2.0</version>
         </dependency>
 
-
-
         <!--lombok-->
 
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.8</version>
+            <version>1.18.14</version>
         </dependency>
 
         <dependency>
