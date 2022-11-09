@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 public class GulimallElasticSearchConfig {
     @Bean
     RestHighLevelClient client() {
-        RestClientBuilder builder = RestClient.builder(new HttpHost("192.168.56.10", 9200, "http"));
+        RestClientBuilder builder = RestClient.builder(new HttpHost("139.9.124.79", 9200, "http"));
         return new RestHighLevelClient(builder);
     }
 }
