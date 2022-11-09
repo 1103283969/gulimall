@@ -14,6 +14,8 @@
         <option value="$PROJECT_DIR$/gulimall-member/pom.xml" />
         <option value="$PROJECT_DIR$/gulimall-ware/pom.xml" />
         <option value="$PROJECT_DIR$/gulimall-gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/gulimall-third-party/pom.xml" />
+        <option value="$PROJECT_DIR$/gulimall-search/pom.xml" />
       </list>
     </option>
   </component>

@@ -1,0 +1,26 @@
+alibaba:
+  cloud:
+    access-key: LTAI5t9HsdbWiGnPsJ2sqEt4
+    secret-key: CajfY46SGJ2GNxkVK6nL6Gundlu2et
+    oss:
+      endpoint: oss-cn-beijing.aliyuncs.com
+      bucket: gulimall-hellowzl
+#
+
+spring:
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://124.220.154.222:3306/gulimall_pms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 124.220.154.222:8848
+
+  application:
+    name: gulimall-third-party
+
+
+server:
+  port: 30000
