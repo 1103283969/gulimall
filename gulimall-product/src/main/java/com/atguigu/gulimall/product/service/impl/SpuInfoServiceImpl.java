@@ -1,8 +1,12 @@
 package com.atguigu.gulimall.product.service.impl;
 
+import com.alibaba.fastjson.TypeReference;
 import com.atguigu.common.to.es.SkuEsModel;
+import com.atguigu.common.utils.R;
 import com.atguigu.gulimall.product.entity.*;
+import com.atguigu.gulimall.product.feign.WareFeignService;
 import com.atguigu.gulimall.product.service.*;
+import com.atguigu.gulimall.product.vo.SkuHasStockVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +44,9 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
     @Autowired
     AttrService attrService;
 
+    @Autowired
+    WareFeignService wareFeignService;
+
 
 
     @Override
@@ -59,6 +66,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
 
         //1、查出当前spuid对应的所有sku信息，品牌的名字。
         List<SkuInfoEntity> skus = skuInfoService.getSkusBySpuId(spuId);
+        List<Long> skuIdList = skus.stream() .map(SkuInfoEntity::getSkuId).collect(Collectors.toList());
 
         // TODo 4、查询当前sku的所有可以被用来检索的规格属性，
 
@@ -81,10 +89,6 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
             return attrs;
         }).collect(Collectors.toList());
 
-        List<Long> skuIdList = skuInfoEntities.stream()
-                .map(SkuInfoEntity::getSkuId)
-                .collect(Collectors.toList());
-
         //2、封装每个sku的信息
 
         List<SkuEsModel>  uoProducts = skus.stream( ).map(sku -> {
@@ -100,10 +104,11 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
 
             Map<Long, Boolean> stockMap = null;
             try {
-                R skuHasStock = wareFeignService.getSkuHasStock(skuIdList);
-                //
+                R<List<SkuHasStockVo> >  skuHasStock = wareFeignService.getSkusHasStock(skuIdList);
+                List<SkuHasStockVo> data =skuHasStock.getData();
+
                 TypeReference<List<SkuHasStockVo>> typeReference = new TypeReference<List<SkuHasStockVo>>() {};
-                stockMap = skuHasStock.getData(typeReference).stream()
+                stockMap = skuHasStock.getData().stream()
                         .collect(Collectors.toMap(SkuHasStockVo::getSkuId, item -> item.getHasStock()));
             } catch (Exception e) {
                 log.error("库存服务查询异常：原因{}",e);
@@ -125,6 +130,9 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
 
             return esModel;
         }).collect(Collectors.toList( ));
+
+
+        //TODo 5、将数据发送给es进行保存;gulimalL-search;
 
 
 

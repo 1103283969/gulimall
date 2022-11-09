@@ -43,5 +43,4 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
         }).collect(Collectors.toList());
         return skuHasStockVos;
     }
-
 }
