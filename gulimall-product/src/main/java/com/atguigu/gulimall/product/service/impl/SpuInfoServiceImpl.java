@@ -69,8 +69,6 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
             return attr.getAttrId();
         }).collect(Collectors.toList());
 
-
-
         List<Long> searchAttrIds = attrService.selectSearchAttrs(attrIds);
         //转换为Set集合
         Set<Long> idSet = searchAttrIds.stream().collect(Collectors.toSet());
@@ -99,13 +97,31 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
             esModel.setSkuImg(sku.getSkuDefaultImg());
 
             // TODo 1、发送远程调用，库存系统查询是否有库存
-            // //ToDo 2、热度评分。0,
 
+            Map<Long, Boolean> stockMap = null;
+            try {
+                R skuHasStock = wareFeignService.getSkuHasStock(skuIdList);
+                //
+                TypeReference<List<SkuHasStockVo>> typeReference = new TypeReference<List<SkuHasStockVo>>() {};
+                stockMap = skuHasStock.getData(typeReference).stream()
+                        .collect(Collectors.toMap(SkuHasStockVo::getSkuId, item -> item.getHasStock()));
+            } catch (Exception e) {
+                log.error("库存服务查询异常：原因{}",e);
+            }
+
+
+            // //ToDo 2、热度评分。0,
+            esModel.setHotScore(0L);
+
+            //ToDo 3  查询品牌和分类的名字信息
             BrandEntity brand = brandService.getById(esModel.getBrandId());
             esModel.setBrandName(brand.getName());
             esModel.setBrandImg(brand.getLogo()) ;
             CategoryEntity category = categoryService.getById(esModel.getCatalogId());
             esModel.setCatalogName( category.getName());
+
+            //设置检索属性
+            esModel.setAttrs(attrsList);
 
             return esModel;
         }).collect(Collectors.toList( ));

@@ -12,6 +12,7 @@
         <result property="skuName" column="sku_name"/>
         <result property="stockLocked" column="stock_locked"/>
     </resultMap>
+    <select id="getSkuStock" resultType="java.lang.Long"></select>
 
 
 </mapper>
