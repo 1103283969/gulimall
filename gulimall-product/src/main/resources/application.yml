@@ -8,8 +8,11 @@ spring:
     nacos:
       discovery:
         server-addr: 124.220.154.222:8848
-  application:
-    name: gulimall-product
+#  application:
+#    name: gulimall-product
+  thymeleaf:
+    cache: false
+
 
 mybatis-plus:
   mapper-locations:  classpath:/mapper/**/*.xml
@@ -37,3 +40,5 @@ alibaba:
 #  alibaba.cloud.access-key=your-ak
 #  alibaba.cloud.secret-key=your-sk
 #  alibaba.cloud.oss.endpoint=***
+
+

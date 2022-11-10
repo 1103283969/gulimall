@@ -10,9 +10,9 @@ import lombok.Data;
 /**
  * 品牌分类关联
  * 
- * @author wangzhiliang
- * @email sunlightcs@gmail.com
- * @date 2022-10-29 21:51:49
+ * @author 夏沫止水
+ * @email HeJieLin@gulimall.com
+ * @date 2020-05-22 19:00:18
  */
 @Data
 @TableName("pms_category_brand_relation")

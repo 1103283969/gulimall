@@ -84,6 +84,13 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         return  parentPath.toArray(new Long[parentPath.size()]);
     }
 
+    @Override
+    public List<CategoryEntity> getLevel1Categorys() {
+
+        List<CategoryEntity> entities = baseMapper.selectList(new QueryWrapper<CategoryEntity>().eq("parent_cid", 0));
+        return entities;
+    }
+
     private List<Long> findParentPath(Long catelogId,List<Long> paths){
         //收集当前节点
         paths.add(catelogId);

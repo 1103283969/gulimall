@@ -1,8 +1,9 @@
-package com.atguigu.gulimall.product.controller;
+package com.atguigu.gulimall.product.app;
 
 import java.util.Arrays;
 import java.util.Map;
 
+import com.atguigu.common.utils.R;
 import com.atguigu.gulimall.product.service.CategoryService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class AttrGroupController {
      */
     @RequestMapping("/list/{catelogId}")
     @RequiresPermissions("product:attrgroup:list")
-    public R list(@RequestParam Map<String, Object> params,@PathVariable("catelogId")  long catelogId){
+    public R list(@RequestParam Map<String, Object> params, @PathVariable("catelogId")  long catelogId){
 //        PageUtils page = attrGroupService.queryPage(params);
 
         PageUtils page = attrGroupService.queryPage(params,catelogId);

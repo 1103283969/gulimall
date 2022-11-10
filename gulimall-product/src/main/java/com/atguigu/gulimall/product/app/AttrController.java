@@ -1,8 +1,10 @@
-package com.atguigu.gulimall.product.controller;
+package com.atguigu.gulimall.product.app;
 
 import java.util.Arrays;
 import java.util.Map;
 
+
+import com.atguigu.common.utils.R;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,7 +39,7 @@ public class AttrController {
     public R list(@RequestParam Map<String, Object> params){
         PageUtils page = attrService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return R.ok();
     }
 
 
@@ -49,7 +51,7 @@ public class AttrController {
     public R info(@PathVariable("attrId") Long attrId){
 		AttrEntity attr = attrService.getById(attrId);
 
-        return R.ok().put("attr", attr);
+        return R.ok();
     }
 
     /**
