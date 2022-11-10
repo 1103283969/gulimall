@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.atguigu.gulimall.product.entity.CategoryBrandRelationEntity;
 import com.atguigu.gulimall.product.service.CategoryBrandRelationService;
 import com.atguigu.common.utils.PageUtils;
-import com.atguigu.common.utils.R;
-
 
 
 /**

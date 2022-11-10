@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.atguigu.gulimall.member.entity.MemberLoginLogEntity;
 import com.atguigu.gulimall.member.service.MemberLoginLogService;
 import com.atguigu.common.utils.PageUtils;
-import com.atguigu.common.utils.R;
-
 
 
 /**

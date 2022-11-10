@@ -1,17 +1,19 @@
 package com.atguigu.gulimall.product.service.impl;
 
 import com.alibaba.fastjson.TypeReference;
+import com.atguigu.common.constant.ProductConstant;
 import com.atguigu.common.to.es.SkuEsModel;
-import com.atguigu.common.utils.R;
 import com.atguigu.gulimall.product.entity.*;
+import com.atguigu.gulimall.product.feign.SearchFeignService;
 import com.atguigu.gulimall.product.feign.WareFeignService;
 import com.atguigu.gulimall.product.service.*;
 import com.atguigu.gulimall.product.vo.SkuHasStockVo;
+
+import com.baomidou.mybatisplus.extension.api.R;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -47,6 +49,8 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
     @Autowired
     WareFeignService wareFeignService;
 
+    @Autowired
+    SearchFeignService searchFeignService;
 
 
     @Override
@@ -91,7 +95,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
 
         //2、封装每个sku的信息
 
-        List<SkuEsModel>  uoProducts = skus.stream( ).map(sku -> {
+        List<SkuEsModel>  upProducts = skus.stream( ).map(sku -> {
           //组装需要的数据
 
             SkuEsModel esModel = new SkuEsModel();
@@ -104,7 +108,7 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
 
             Map<Long, Boolean> stockMap = null;
             try {
-                R<List<SkuHasStockVo> >  skuHasStock = wareFeignService.getSkusHasStock(skuIdList);
+                R<List<SkuHasStockVo> > skuHasStock = wareFeignService.getSkusHasStock(skuIdList);
                 List<SkuHasStockVo> data =skuHasStock.getData();
 
                 TypeReference<List<SkuHasStockVo>> typeReference = new TypeReference<List<SkuHasStockVo>>() {};
@@ -133,6 +137,17 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
 
 
         //TODo 5、将数据发送给es进行保存;gulimalL-search;
+
+        com.atguigu.common.utils.R r = searchFeignService.productStatusUp(upProducts);
+
+        if (r.getCode() == 0) {
+            //远程调用成功
+            //TODO 6、修改当前spu的状态
+            this.baseMapper.updaSpusStatus(spuId, ProductConstant.ProductStatusEnum.SPU_UP.getCode());
+        } else {
+            //远程调用失败
+            //TODO 7、重复调用？接口幂等性:重试机制
+        }
 
 
 

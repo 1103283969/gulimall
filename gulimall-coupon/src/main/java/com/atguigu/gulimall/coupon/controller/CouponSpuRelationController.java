@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.atguigu.gulimall.coupon.entity.CouponSpuRelationEntity;
 import com.atguigu.gulimall.coupon.service.CouponSpuRelationService;
 import com.atguigu.common.utils.PageUtils;
-import com.atguigu.common.utils.R;
-
 
 
 /**

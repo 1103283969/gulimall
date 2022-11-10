@@ -5,3 +5,10 @@ spring:
         server-addr: 124.220.154.222:8848
   application:
     name: gulimall-search
+
+
+
+
+
+server:
+  port: 12000
