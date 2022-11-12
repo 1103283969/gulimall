@@ -11,7 +11,10 @@ spring:
 #  application:
 #    name: gulimall-product
   thymeleaf:
-    cache: false
+    cache: true
+  redis:
+    host: 139.9.124.79
+    port: 6379
 
 
 mybatis-plus:
@@ -23,7 +26,7 @@ mybatis-plus:
       logic-not-delete-value: 0
 
 server:
-  port: 18000
+  port: 10000
 
 
 logging:
