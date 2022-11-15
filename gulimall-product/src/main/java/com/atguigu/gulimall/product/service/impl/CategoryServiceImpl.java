@@ -3,6 +3,7 @@ package com.atguigu.gulimall.product.service.impl;
 import com.atguigu.gulimall.product.entity.CategoryBrandRelationEntity;
 import com.atguigu.gulimall.product.vo.Catelog2Vo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,6 +28,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
 /*    @Autowired
     CategoryDao categoryDao;*/
+
+   @Autowired
+   private StringRedisTemplate stringRedisTemplate;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -94,6 +98,16 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
     @Override
     public Map<String, List<Catelog2Vo>> getCatalogJson() {
+
+
+      return null;
+
+    }
+
+
+
+
+    public Map<String, List<Catelog2Vo>> getCatalogJsonFromDb() {
         System.out.println("查询了数据库");
 
         //将数据库的多次查询变为一次
@@ -136,6 +150,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
         return parentCid;
     }
+
+
+
 
 
     private List<Long> findParentPath(Long catelogId,List<Long> paths){
