@@ -57,8 +57,6 @@ public class LoginController {
 
          }
 
-
-
         //2.验证码再次校验，存在redis
         String code = UUID.randomUUID().toString().substring(0,5)+"_"+System.currentTimeMillis();
         //redis缓存验证码
@@ -81,7 +79,7 @@ public class LoginController {
             attributes.addFlashAttribute("errors",errors);
 
             //效验出错回到注册页面
-            return "redirect:http://auth.gulimall.com/reg.html";
+            return "reg";
         }
 
         //1、效验验证码
@@ -98,13 +96,13 @@ public class LoginController {
                 R register = memberFeignService.register(vos);
                 if (register.getCode() == 0) {
                     //成功
-                    return "redirect:http://auth.gulimall.com/login.html";
+                    return "login";
                 } else {
                     //失败
                     Map<String, String> errors = new HashMap<>();
                     errors.put("msg", register.getData("msg",new TypeReference<String>(){}));
                     attributes.addFlashAttribute("errors",errors);
-                    return "redirect:http://auth.gulimall.com/reg.html";
+                    return "reg";
                 }
 
 
@@ -113,14 +111,14 @@ public class LoginController {
                 Map<String, String> errors = new HashMap<>();
                 errors.put("code","验证码错误");
                 attributes.addFlashAttribute("errors",errors);
-                return "redirect:http://auth.gulimall.com/reg.html";
+                return "reg";
             }
         } else {
             //效验出错回到注册页面
             Map<String, String> errors = new HashMap<>();
             errors.put("code","验证码错误");
             attributes.addFlashAttribute("errors",errors);
-            return "redirect:http://auth.gulimall.com/reg.html";
+            return "reg";
         }
     }
 
