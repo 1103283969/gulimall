@@ -1,10 +1,13 @@
 package com.atguigu.gulimall.auth.controller;
 
 
+import com.alibaba.fastjson.TypeReference;
 import com.atguigu.common.constant.AuthServerConstant;
 import com.atguigu.common.exception.BizCodeEnum;
 import com.atguigu.common.utils.R;
 import com.atguigu.gulimall.auth.feign.ThirdPartFeignService;
+import com.atguigu.gulimall.auth.vo.UserRegisterVo;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
@@ -85,12 +88,12 @@ public class LoginController {
         String code = vos.getCode();
 
         //获取存入Redis里的验证码
-        String redisCode = stringRedisTemplate.opsForValue().get(AuthServerConstant.SMS_CODE_CACHE_PREFIX + vos.getPhone());
+        String redisCode = redisTemplate.opsForValue().get(AuthServerConstant.SMS_CODE_CACHE_PREFIX + vos.getPhone());
         if (!StringUtils.isEmpty(redisCode)) {
             //截取字符串
             if (code.equals(redisCode.split("_")[0])) {
                 //删除验证码;令牌机制
-                stringRedisTemplate.delete(AuthServerConstant.SMS_CODE_CACHE_PREFIX+vos.getPhone());
+                redisTemplate.delete(AuthServerConstant.SMS_CODE_CACHE_PREFIX+vos.getPhone());
                 //验证码通过，真正注册，调用远程服务进行注册
                 R register = memberFeignService.register(vos);
                 if (register.getCode() == 0) {
